@@ -113,6 +113,14 @@ export default class Index extends React.Component {
                   } else {
                     // Add a new conversation to conversations along with the new message
                     console.log(newText);
+                    const { conversation, ...newTextObj } = newText;
+                    return {
+                      ...prev,
+                      me: {
+                        ...prev.me,
+                        conversations: [...prev.me.conversations, conversation]
+                      }
+                    };
                   }
                 }
               })

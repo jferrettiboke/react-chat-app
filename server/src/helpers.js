@@ -3,14 +3,6 @@ const APP_SECRET = "appsecret123";
 
 const isLoggedIn = (resolve, parent, args, context, info) => {
   const Authorization = context.request.get("Authorization");
-  // console.log();
-  // if (context.connection) {
-  //   // Context from subscriptions
-  //   Authorization = context.connection.context.Authorization;
-  // } else {
-  //   // Context from queries and mutations
-  //   Authorization = context.request.get("Authorization");
-  // }
 
   if (Authorization) {
     const token = Authorization.replace("Bearer ", "");

@@ -7,6 +7,8 @@ import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 
+import { parseCookies } from "./withApollo";
+
 let apolloClient = null;
 
 // Polyfill fetch() on the server (used by apollo-client)
@@ -33,10 +35,15 @@ function create(initialState, { getToken }) {
   let link = authLink.concat(httpLink);
 
   if (process.browser) {
+    const token = parseCookies().token;
+
     const wsLink = new WebSocketLink({
       uri: `ws://localhost:4000`,
       options: {
-        reconnect: true
+        reconnect: true,
+        connectionParams: {
+          Authorization: token ? `Bearer ${token}` : ""
+        }
       }
     });
 

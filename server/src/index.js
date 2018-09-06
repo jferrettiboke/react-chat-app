@@ -5,7 +5,15 @@ const jwt = require("jsonwebtoken");
 const APP_SECRET = "appsecret123";
 
 function getUserId(context) {
-  const Authorization = context.request.get("Authorization");
+  let Authorization;
+
+  if (context.connection) {
+    // Context from subscriptions
+    Authorization = context.connection.context.Authorization;
+  } else {
+    // Context from queries and mutations
+    Authorization = context.request.get("Authorization");
+  }
 
   if (Authorization) {
     const token = Authorization.replace("Bearer ", "");
@@ -130,7 +138,12 @@ const resolvers = {
       const { name, participants } = parent;
       // See this issue for more details https://github.com/prisma/graphql-yoga/issues/393#issuecomment-419085395
       // A workaround to solve this for now is do the logic on the client app
-      return "[Chat name]"; // <-- Remove this line when headers are present on context for subscriptions
+
+      // if (info.operation.operation === "subscription") {
+      //   console.log(context.connection.context.Authorization);
+      // }
+
+      // return "[Chat name]"; // <-- Remove this line when headers are present on context for subscriptions
       const userId = getUserId(context);
 
       if (participants.length > 2) {

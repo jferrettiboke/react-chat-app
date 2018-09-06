@@ -75,7 +75,7 @@ const resolvers = {
       );
 
       return {
-        token: jwt.sign({ userId: user.id }, APP_SECRET),
+        token: jwt.sign({ userId: newUser.id }, APP_SECRET),
         user: newUser
       };
     },

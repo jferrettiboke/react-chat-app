@@ -3,7 +3,23 @@ const APP_SECRET = "appsecret123";
 
 const Mutation = {
   async signup(_, { username }, context, info) {
-    const user = await context.prisma.mutation.createUser(
+    const user = await context.prisma.query.user(
+      {
+        where: {
+          username
+        }
+      },
+      `{ id }`
+    );
+
+    if (user) {
+      return {
+        token: jwt.sign({ userId: user.id }, APP_SECRET),
+        user
+      };
+    }
+
+    const newUser = await context.prisma.mutation.createUser(
       {
         data: {
           username
@@ -13,8 +29,8 @@ const Mutation = {
     );
 
     return {
-      token: jwt.sign({ userId: user.id }, APP_SECRET),
-      user
+      token: jwt.sign({ userId: newUser.id }, APP_SECRET),
+      user: newUser
     };
   },
   async createConversation(

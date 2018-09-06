@@ -92,11 +92,8 @@ export default class Index extends React.Component {
                     const conversations = prev.me.conversations.map(
                       conversation => {
                         if (conversation.id === conversationExists.id) {
-                          const { conversation: x, ...newTextObj } = newText;
-                          return {
-                            ...conversation,
-                            texts: [...conversation.texts, newTextObj]
-                          };
+                          const { conversation: chat } = newText;
+                          return chat;
                         }
 
                         return conversation;
@@ -112,8 +109,8 @@ export default class Index extends React.Component {
                     };
                   } else {
                     // Add a new conversation to conversations along with the new message
-                    console.log(newText);
-                    const { conversation, ...newTextObj } = newText;
+                    const { conversation } = newText;
+
                     return {
                       ...prev,
                       me: {

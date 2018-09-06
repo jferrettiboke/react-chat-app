@@ -13,7 +13,7 @@ type Mutation {
   signup(username: String!): AuthPayload!
   createConversation(
     name: String
-    participantIds: [ID!]!
+    participantIds: [String!]!
     text: String
   ): Conversation!
   sendTextMessage(conversationId: ID!, text: String!): Text!

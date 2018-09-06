@@ -1,0 +1,6 @@
+endpoint: https://eu1.prisma.sh/chat-app/chat-app/dev
+datamodel: datamodel.graphql
+
+hooks:
+  post-deploy:
+    - graphql get-schema -p prisma

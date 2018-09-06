@@ -1,0 +1,25 @@
+type User {
+  id: ID! @unique
+  username: String! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  conversations: [Conversation!]!
+}
+
+type Conversation {
+  id: ID! @unique
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  texts: [Text!]!
+  participants: [User!]!
+}
+
+type Text {
+  id: ID! @unique
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  author: User!
+  conversation: Conversation!
+}

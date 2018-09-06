@@ -128,16 +128,21 @@ const resolvers = {
   Conversation: {
     name(parent, args, context, info) {
       const { name, participants } = parent;
+      // See this issue for more details https://github.com/prisma/graphql-yoga/issues/393#issuecomment-419085395
+      // A workaround to solve this for now is do the logic on the client app
+      return "[Chat name]"; // <-- Remove this line when headers are present on context for subscriptions
       const userId = getUserId(context);
 
-      if (participants.length === 2) {
+      if (participants.length > 2) {
+        // It's a group conversation
+        return name;
+      } else if (participants.length === 2) {
+        // It's a private conversation with 2 people
         if (participants[0].id === userId) {
           return participants[1].username;
         } else {
           return participants[0].username;
         }
-      } else {
-        return name;
       }
     }
   }

@@ -14,7 +14,7 @@ export default gql`
         }
         conversation {
           id
-          # name
+          name
           participants {
             id
             username

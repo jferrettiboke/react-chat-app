@@ -93,7 +93,10 @@ export default class Index extends React.Component {
                       conversation => {
                         if (conversation.id === conversationExists.id) {
                           const { conversation: chat } = newText;
-                          return chat;
+                          return {
+                            ...conversation,
+                            texts: chat.texts
+                          };
                         }
 
                         return conversation;

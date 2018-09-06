@@ -35,14 +35,14 @@ function create(initialState, { getToken }) {
   let link = authLink.concat(httpLink);
 
   if (process.browser) {
-    const token = parseCookies().token;
+    const token = parseCookies().token || getToken();
 
     const wsLink = new WebSocketLink({
       uri: `ws://localhost:4000`,
       options: {
         reconnect: true,
         connectionParams: {
-          Authorization: token ? `Bearer ${token}` : ""
+          Authorization: `Bearer ${token}`
         }
       }
     });

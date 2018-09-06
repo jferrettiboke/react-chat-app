@@ -88,7 +88,7 @@ export default class Index extends React.Component {
                   );
 
                   if (conversationExists) {
-                    // It is a new chat from subscription and it is not in prev query.
+                    // Add message to an existing conversation
                     const conversations = prev.me.conversations.map(
                       conversation => {
                         if (conversation.id === conversationExists.id) {
@@ -110,6 +110,9 @@ export default class Index extends React.Component {
                         conversations
                       }
                     };
+                  } else {
+                    // Add a new conversation to conversations along with the new message
+                    console.log(newText);
                   }
                 }
               })

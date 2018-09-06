@@ -14,20 +14,20 @@ export default gql`
         }
         conversation {
           id
-          name
-          #   participants {
-          #     id
-          #     username
-          #   }
-          #   texts {
-          #     id
-          #     text
-          #     createdAt
-          #     author {
-          #       id
-          #       username
-          #     }
-          #   }
+          # name
+          participants {
+            id
+            username
+          }
+          texts {
+            id
+            text
+            createdAt
+            author {
+              id
+              username
+            }
+          }
         }
       }
     }

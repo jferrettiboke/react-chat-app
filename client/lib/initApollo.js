@@ -2,12 +2,9 @@ import { ApolloClient, InMemoryCache } from "apollo-boost";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import fetch from "isomorphic-unfetch";
-
 import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
-
-import { parseCookies } from "./withApollo";
 
 let apolloClient = null;
 
@@ -35,8 +32,7 @@ function create(initialState, { getToken }) {
   let link = authLink.concat(httpLink);
 
   if (process.browser) {
-    const token = parseCookies().token || getToken();
-
+    const token = getToken();
     const wsLink = new WebSocketLink({
       uri: `ws://localhost:4000`,
       options: {

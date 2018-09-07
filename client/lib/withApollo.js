@@ -6,7 +6,7 @@ import Head from "next/head";
 
 import initApollo from "./initApollo";
 
-export function parseCookies(req, options = {}) {
+function parseCookies(req, options = {}) {
   return cookie.parse(
     req ? req.headers.cookie || "" : document.cookie,
     options

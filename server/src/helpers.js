@@ -2,7 +2,28 @@ const jwt = require("jsonwebtoken");
 const APP_SECRET = "appsecret123";
 
 const isLoggedIn = (resolve, parent, args, context, info) => {
-  const Authorization = context.request.get("Authorization");
+  let Authorization;
+
+  if (
+    info.operation.operation === "query" ||
+    info.operation.operation === "mutation"
+  ) {
+    Authorization = context.request.get("Authorization");
+  }
+
+  if (info.operation.operation === "subscription") {
+    Authorization = context.connection.context.Authorization;
+  }
+
+  if (context.connection) {
+    // Context from subscriptions
+    Authorization = context.connection.context.Authorization;
+    // console.log("subscription", Authorization);
+  } else {
+    // Context from queries and mutations
+    Authorization = context.request.get("Authorization");
+    // console.log("query/mutation", Authorization);
+  }
 
   if (Authorization) {
     const token = Authorization.replace("Bearer ", "");

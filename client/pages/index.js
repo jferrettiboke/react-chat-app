@@ -48,6 +48,45 @@ export default class Index extends React.Component {
     return { me };
   }
 
+  renderHeader() {
+    return (
+      <AuthenticatedUser>
+        {({ logout, data: { me } }) => (
+          <header className="my-16 w-full">
+            <div className="text-center">
+              <div className="flex flex-col items-center text-grey">
+                Logged in as {me.username}
+              </div>
+              <a
+                className="block text-black mt-2"
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  logout();
+                }}
+              >
+                Logout
+              </a>
+            </div>
+          </header>
+        )}
+      </AuthenticatedUser>
+    );
+  }
+
+  renderSearchInput() {
+    return (
+      <SearchInput
+        onChange={searchInput => {
+          this.setState(prevState => ({
+            ...prevState,
+            searchInput
+          }));
+        }}
+      />
+    );
+  }
+
   renderConversationList() {
     return (
       <Query query={MY_CONVERSATIONS_QUERY}>
@@ -383,61 +422,32 @@ export default class Index extends React.Component {
 
   render() {
     return (
-      <AuthenticatedUser>
-        {({ logout, data: { me } }) => (
-          <div className="flex flex-col justify-center items-center h-screen">
-            <header className="my-16 w-full">
-              <div className="text-center">
-                <div className="flex flex-col items-center text-grey">
-                  Logged in as {me.username}
-                </div>
-                <a
-                  className="block text-black mt-2"
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    logout();
-                  }}
-                >
-                  Logout
-                </a>
-              </div>
-            </header>
-
-            <div
-              className="w-2/3 rounded border flex bg-white overflow-hidden"
-              style={{ height: 500 }}
-            >
-              <div id="leftTile" className="w-1/3 border-r flex flex-col">
-                <div id="search" className="h-16 border-b">
-                  <SearchInput
-                    onChange={searchInput => {
-                      this.setState(prevState => ({
-                        ...prevState,
-                        searchInput
-                      }));
-                    }}
-                  />
-                </div>
-                <div className="flex-1 overflow-y-scroll scrolling-touch py-2">
-                  {this.renderConversationList()}
-                  {this.renderUserList()}
-                  {this.renderTextMessageList()}
-                </div>
-              </div>
-              <div id="rightTile" className="w-2/3">
-                <Query query={MY_CONVERSATIONS_QUERY}>
-                  {({ loading, error, data }) =>
-                    this.renderWindowsFromContext({ me: data.me })
-                  }
-                </Query>
-              </div>
+      <div className="flex flex-col justify-center items-center h-screen">
+        {this.renderHeader()}
+        <div
+          className="w-2/3 rounded border flex bg-white overflow-hidden"
+          style={{ height: 500 }}
+        >
+          <div id="leftTile" className="w-1/3 border-r flex flex-col">
+            <div id="search" className="h-16 border-b">
+              {this.renderSearchInput()}
             </div>
-
-            <Footer />
+            <div className="flex-1 overflow-y-scroll scrolling-touch py-2">
+              {this.renderConversationList()}
+              {this.renderUserList()}
+              {this.renderTextMessageList()}
+            </div>
           </div>
-        )}
-      </AuthenticatedUser>
+          <div id="rightTile" className="w-2/3">
+            <Query query={MY_CONVERSATIONS_QUERY}>
+              {({ loading, error, data }) =>
+                this.renderWindowsFromContext({ me: data.me })
+              }
+            </Query>
+          </div>
+        </div>
+        <Footer />
+      </div>
     );
   }
 }
